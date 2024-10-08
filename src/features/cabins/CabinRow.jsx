@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { formatCurrency } from "../../utils/helpers.js";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteCabin } from "../../services/apiCabins.js";
 
 const TableRow = styled.div`
   display: grid;
@@ -42,8 +44,35 @@ const Discount = styled.div`
 
 // eslint-disable-next-line react/prop-types
 function CabinRow({ cabin }) {
+  const queryClient = useQueryClient();
+  // eslint-disable-next-line no-unused-vars
+  const { isLoading: isDeleting, mutate } = useMutation({
+    mutationFn: deleteCabin,
+    onSuccess: () => {
+      alert("Cabin successfully deleted.");
+      queryClient.invalidateQueries({
+        queryKey: ["cabins"],
+      });
+    },
+    onError: (err) => alert(err.message),
+  });
+
   // eslint-disable-next-line react/prop-types
-  const { name, image, maxCapacity, regularPrice, discount } = cabin;
+  const {
+    // eslint-disable-next-line react/prop-types
+    name,
+    // eslint-disable-next-line react/prop-types
+    image,
+    // eslint-disable-next-line react/prop-types
+    maxCapacity,
+    // eslint-disable-next-line react/prop-types
+    regularPrice,
+    // eslint-disable-next-line react/prop-types
+    discount,
+    // eslint-disable-next-line react/prop-types
+    id: cabinId,
+  } = cabin;
+
   return (
     <TableRow role="row">
       <Img src={image} />
@@ -51,7 +80,9 @@ function CabinRow({ cabin }) {
       <div>Fits up to {maxCapacity} guests</div>
       <Price>{formatCurrency(regularPrice)}</Price>
       <Discount>{formatCurrency(discount)}</Discount>
-      <button>Delete</button>
+      <button onClick={() => mutate(cabinId)} disabled={isDeleting}>
+        {isDeleting ? "Deleting" : "Delete"}
+      </button>
     </TableRow>
   );
 }
