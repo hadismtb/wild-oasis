@@ -30,7 +30,7 @@ function CreateCabinForm() {
     onError: (err) => toast.error(err.message),
   });
 
-  const onSubmit = (data) => mutate(data);
+  const onSubmit = (data) => mutate({ ...data, image: data.image[0] });
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
@@ -78,7 +78,7 @@ function CreateCabinForm() {
           {...register("discount", {
             required: "This field is required",
             validate: (value) =>
-              value <= getValues()?.regularPrice ||
+              +value <= +getValues()?.regularPrice ||
               "Discount should be less than the regular price",
           })}
         />
@@ -100,7 +100,14 @@ function CreateCabinForm() {
       </FormRow>
 
       <FormRow label="Cabin photo">
-        <FileInput id="image" accept="image/*" disabled={isCreating} />
+        <FileInput
+          id="image"
+          accept="image/*"
+          disabled={isCreating}
+          {...register("image", {
+            required: "This field is required",
+          })}
+        />
       </FormRow>
 
       <FormRow>
