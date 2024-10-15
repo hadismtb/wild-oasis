@@ -1,10 +1,8 @@
 import styled from "styled-components";
 import { formatCurrency } from "../../utils/helpers.js";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteCabin } from "../../services/apiCabins.js";
-import { toast } from "react-toast";
 import { useState } from "react";
 import CreateCabinForm from "./CreateCabinForm.jsx";
+import { useDeleteCabin } from "./useDeleteCabin.js";
 
 const TableRow = styled.div`
   display: grid;
@@ -48,18 +46,7 @@ const Discount = styled.div`
 // eslint-disable-next-line react/prop-types
 function CabinRow({ cabin }) {
   const [showForm, setShowForm] = useState(false);
-  const queryClient = useQueryClient();
-  // eslint-disable-next-line no-unused-vars
-  const { isLoading: isDeleting, mutate } = useMutation({
-    mutationFn: deleteCabin,
-    onSuccess: () => {
-      toast.success("Cabin successfully deleted.");
-      queryClient.invalidateQueries({
-        queryKey: ["cabins"],
-      });
-    },
-    onError: (err) => toast.error(err.message),
-  });
+  const { isDeleting, deleteCabin } = useDeleteCabin();
 
   // eslint-disable-next-line react/prop-types
   const {
@@ -91,7 +78,7 @@ function CabinRow({ cabin }) {
         )}
         <div>
           <button onClick={() => setShowForm((show) => !show)}>Edit</button>
-          <button onClick={() => mutate(cabinId)} disabled={isDeleting}>
+          <button onClick={() => deleteCabin(cabinId)} disabled={isDeleting}>
             {isDeleting ? "Deleting" : "Delete"}
           </button>
         </div>
