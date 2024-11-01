@@ -1,11 +1,15 @@
 import styled from "styled-components";
+import { createContext, useContext, useState } from "react";
+import { HiEllipsisVertical } from "react-icons/hi2";
+import { createPortal } from "react-dom";
+import useOutsideClick from "../hooks/useOutsideClick.js";
 
-const StyledMenu = styled.div`
+const Menu = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
 `;
-
+// eslint-disable-next-line no-unused-vars
 const StyledToggle = styled.button`
   background: none;
   border: none;
@@ -24,7 +28,7 @@ const StyledToggle = styled.button`
     color: var(--color-grey-700);
   }
 `;
-
+// eslint-disable-next-line no-unused-vars
 const StyledList = styled.ul`
   position: fixed;
 
@@ -36,6 +40,7 @@ const StyledList = styled.ul`
   top: ${(props) => props.position.y}px;
 `;
 
+// eslint-disable-next-line no-unused-vars
 const StyledButton = styled.button`
   width: 100%;
   text-align: left;
@@ -60,3 +65,85 @@ const StyledButton = styled.button`
     transition: all 0.3s;
   }
 `;
+
+const MenusContext = createContext();
+
+// eslint-disable-next-line react/prop-types
+function Menus({ children }) {
+  const [openId, setOpenId] = useState("");
+  const [position, setPosition] = useState(null);
+
+  const close = () => setOpenId("");
+  const open = setOpenId;
+
+  return (
+    <MenusContext.Provider
+      value={{ openId, close, open, position, setPosition }}
+    >
+      {children}
+    </MenusContext.Provider>
+  );
+}
+
+// eslint-disable-next-line react/prop-types
+function Toggle({ id }) {
+  const { open, close, openId, setPosition } = useContext(MenusContext);
+
+  const clickHandler = (e) => {
+    const rect = e.target.closest("button").getBoundingClientRect();
+
+    if (openId === id) return close();
+    open(id);
+    setPosition({
+      x: window.innerWidth - rect.width - rect.x,
+      y: rect.y + rect.height + 8,
+    });
+  };
+
+  return (
+    <StyledToggle onClick={clickHandler}>
+      <HiEllipsisVertical />
+    </StyledToggle>
+  );
+}
+
+// eslint-disable-next-line react/prop-types
+function List({ id, children }) {
+  const { openId, position, close } = useContext(MenusContext);
+
+  const ref = useOutsideClick(close, true);
+
+  if (openId !== id) return null;
+
+  return createPortal(
+    <StyledList position={position} ref={ref}>
+      {children}
+    </StyledList>,
+    document.body,
+  );
+}
+
+// eslint-disable-next-line react/prop-types
+function Button({ children, icon, onClick }) {
+  const { close } = useContext(MenusContext);
+  const handleClick = () => {
+    onClick?.();
+    close();
+  };
+
+  return (
+    <li>
+      <StyledButton onClick={handleClick}>
+        {icon || ""}
+        <span>{children}</span>
+      </StyledButton>
+    </li>
+  );
+}
+
+Menus.List = List;
+Menus.Toggle = Toggle;
+Menus.Button = Button;
+Menus.Menu = Menu;
+
+export default Menus;

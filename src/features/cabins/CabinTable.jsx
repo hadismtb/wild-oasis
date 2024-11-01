@@ -3,6 +3,7 @@ import Spinner from "../../ui/Spinner.jsx";
 import CabinRow from "./CabinRow.jsx";
 import useCabin from "./useCabins.js";
 import Table from "../../ui/Table.jsx";
+import Menus from "../../ui/Menus.jsx";
 
 // eslint-disable-next-line no-unused-vars
 const TableHeader = styled.header`
@@ -26,25 +27,23 @@ function CabinTable() {
   if (isLoading) return <Spinner />;
 
   return (
-    <Table columns="0.6fr 1.8fr 2.2fr 1fr 1fr 1fr">
-      <Table.Header>
-        <div></div>
-        <div>Cabin</div>
-        <div>Capacity</div>
-        <div>Price</div>
-        <div>Discount</div>
-        <div></div>
-      </Table.Header>
+    <Menus>
+      <Table columns="0.6fr 1.8fr 2.2fr 1fr 1fr 1fr">
+        <Table.Header>
+          <div></div>
+          <div>Cabin</div>
+          <div>Capacity</div>
+          <div>Price</div>
+          <div>Discount</div>
+          <div></div>
+        </Table.Header>
 
-      <Table.Body
-        data={cabins}
-        render={(cabin) => <CabinRow key={cabin.id} cabin={cabin} />}
-      />
-
-      {/*{cabins.map((cabin) => (*/}
-      {/*  <CabinRow key={cabin.id} cabin={cabin} />*/}
-      {/*))}*/}
-    </Table>
+        <Table.Body
+          data={cabins}
+          render={(cabin) => <CabinRow key={cabin.id} cabin={cabin} />}
+        />
+      </Table>
+    </Menus>
   );
 }
 export default CabinTable;
