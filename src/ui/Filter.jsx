@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { useSearchParams } from "react-router-dom";
 
 const StyledFilter = styled.div`
   border: 1px solid var(--color-grey-100);
@@ -33,3 +34,51 @@ const FilterButton = styled.button`
     color: var(--color-brand-50);
   }
 `;
+
+// eslint-disable-next-line react/prop-types
+function Filter({ filterField, options }) {
+  // eslint-disable-next-line no-unused-vars
+  const [searchParams, setSearchParams] = useSearchParams();
+  // eslint-disable-next-line react/prop-types
+  const filterValue = searchParams.get(filterField) || options[0]?.value;
+
+  const handleClick = (val) => {
+    searchParams.set(filterField, val);
+    setSearchParams(searchParams);
+  };
+
+  return (
+    <StyledFilter>
+      {/* eslint-disable-next-line react/prop-types */}
+      {options.map((op) => (
+        <FilterButton
+          key={op.value}
+          active={filterValue === op.value ? "active" : ""}
+          onClick={() => handleClick(op.value)}
+        >
+          {op.label}
+        </FilterButton>
+      ))}
+      {/*<FilterButton*/}
+      {/*  active={filterValue === "all" || ""}*/}
+      {/*  onClick={() => handleClick("all")}*/}
+      {/*>*/}
+      {/*  All*/}
+      {/*</FilterButton>*/}
+      {/*<FilterButton*/}
+      {/*  active={filterValue === "no-discount" || ""}*/}
+      {/*  onClick={() => handleClick("no-discount")}*/}
+      {/*>*/}
+      {/*  No discount*/}
+      {/*</FilterButton>*/}
+      {/*<FilterButton*/}
+      {/*  active={filterValue === "with-discount" || ""}*/}
+      {/*  onClick={() => handleClick("with-discount")}*/}
+      {/*>*/}
+      {/*  With discount*/}
+      {/*</FilterButton>*/}
+    </StyledFilter>
+  );
+}
+
+export default Filter;

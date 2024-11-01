@@ -4,6 +4,7 @@ import CabinRow from "./CabinRow.jsx";
 import useCabin from "./useCabins.js";
 import Table from "../../ui/Table.jsx";
 import Menus from "../../ui/Menus.jsx";
+import { useSearchParams } from "react-router-dom";
 
 // eslint-disable-next-line no-unused-vars
 const TableHeader = styled.header`
@@ -23,6 +24,14 @@ const TableHeader = styled.header`
 
 function CabinTable() {
   const { isLoading, cabins } = useCabin();
+  const [searchParams] = useSearchParams();
+  const searchValue = searchParams.get("discount") || "all";
+  const cabinsData =
+    searchValue === "no-discount"
+      ? cabins.filter((c) => c.discount === 0)
+      : searchValue === "with-discount"
+      ? cabins.filter((c) => c.discount > 0)
+      : cabins;
 
   if (isLoading) return <Spinner />;
 
@@ -39,7 +48,7 @@ function CabinTable() {
         </Table.Header>
 
         <Table.Body
-          data={cabins}
+          data={cabinsData}
           render={(cabin) => <CabinRow key={cabin.id} cabin={cabin} />}
         />
       </Table>
