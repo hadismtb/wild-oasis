@@ -12,6 +12,16 @@ function BookingTable() {
 
   if (!bookings.length) return <Empty resourceName="Bookings" />;
 
+  // 1.Filter
+  // const filteredBookings =
+  //   filterValue !== "all"
+  //     ? bookings.filter((b) => b.status === filterValue)
+  //     : bookings;
+
+  // 2.SORT
+  // const sortValue = searchParams.get("sort") || "startDate-desc";
+  // const [field, direction] = sortValue.split("-");
+
   return (
     <Menus>
       <Table columns="0.6fr 2fr 2.4fr 1.4fr 1fr 3.2rem">
