@@ -35,17 +35,28 @@ const Amount = styled.div`
 `;
 
 function BookingRow({
+  // eslint-disable-next-line react/prop-types
   booking: {
+    // eslint-disable-next-line react/prop-types,no-unused-vars
     id: bookingId,
+    // eslint-disable-next-line react/prop-types,no-unused-vars
     created_at,
+    // eslint-disable-next-line react/prop-types
     startDate,
+    // eslint-disable-next-line react/prop-types
     endDate,
+    // eslint-disable-next-line react/prop-types
     numNights,
+    // eslint-disable-next-line react/prop-types,no-unused-vars
     numGuests,
+    // eslint-disable-next-line react/prop-types
     totalPrice,
+    // eslint-disable-next-line react/prop-types
     status,
-    guests: { fullName: guestName, email },
-    cabins: { name: cabinName },
+    // eslint-disable-next-line react/prop-types
+    guests: { fullName: guestName, email } = {},
+    // eslint-disable-next-line react/prop-types
+    cabins: { name: cabinName } = {},
   },
 }) {
   const statusToTagName = {
@@ -76,6 +87,7 @@ function BookingRow({
         </span>
       </Stacked>
 
+      {/* eslint-disable-next-line react/prop-types */}
       <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
 
       <Amount>{formatCurrency(totalPrice)}</Amount>

@@ -5,6 +5,7 @@ import useCabin from "./useCabins.js";
 import Table from "../../ui/Table.jsx";
 import Menus from "../../ui/Menus.jsx";
 import { useSearchParams } from "react-router-dom";
+import Empty from "../../ui/Empty.jsx";
 
 // eslint-disable-next-line no-unused-vars
 const TableHeader = styled.header`
@@ -44,6 +45,8 @@ function CabinTable() {
   );
 
   if (isLoading) return <Spinner />;
+
+  if (!cabins.length) return <Empty resourceName="Bookings" />;
 
   return (
     <Menus>
