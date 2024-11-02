@@ -13,3 +13,19 @@ const StyledSelect = styled.select`
   font-weight: 500;
   box-shadow: var(--shadow-sm);
 `;
+
+// eslint-disable-next-line react/prop-types
+function Select({ options, value, onChange, ...props }) {
+  return (
+    <StyledSelect value={value} onChange={onChange} {...props}>
+      {/*eslint-disable-next-line react/prop-types*/}
+      {options.map((op) => (
+        <option value={op.value} key={op.value}>
+          {op.label}
+        </option>
+      ))}
+    </StyledSelect>
+  );
+}
+
+export default Select;

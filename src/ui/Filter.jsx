@@ -54,29 +54,12 @@ function Filter({ filterField, options }) {
         <FilterButton
           key={op.value}
           active={filterValue === op.value ? "active" : ""}
+          disabled={filterValue === op.value}
           onClick={() => handleClick(op.value)}
         >
           {op.label}
         </FilterButton>
       ))}
-      {/*<FilterButton*/}
-      {/*  active={filterValue === "all" || ""}*/}
-      {/*  onClick={() => handleClick("all")}*/}
-      {/*>*/}
-      {/*  All*/}
-      {/*</FilterButton>*/}
-      {/*<FilterButton*/}
-      {/*  active={filterValue === "no-discount" || ""}*/}
-      {/*  onClick={() => handleClick("no-discount")}*/}
-      {/*>*/}
-      {/*  No discount*/}
-      {/*</FilterButton>*/}
-      {/*<FilterButton*/}
-      {/*  active={filterValue === "with-discount" || ""}*/}
-      {/*  onClick={() => handleClick("with-discount")}*/}
-      {/*>*/}
-      {/*  With discount*/}
-      {/*</FilterButton>*/}
     </StyledFilter>
   );
 }
