@@ -12,15 +12,23 @@ function UseBookings() {
       ? null
       : { field: "status", value: filterValue };
 
+  // SORT
+  const sortValue = searchParams.get("sort") || "startDate-desc";
+  const [field, direction] = sortValue.split("-");
+  const sort = { field, direction };
+
+  // PAGINATION
+  const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));
+
   const {
     isLoading,
-    data: bookings,
+    data: { data: bookings, count } = {},
     error,
   } = useQuery({
-    queryKey: ["bookings", filter],
-    queryFn: () => getBookings({ filter }),
+    queryKey: ["bookings", filter, sort, page],
+    queryFn: () => getBookings({ filter, sort, page }),
   });
-  return { isLoading, bookings, error };
+  return { isLoading, bookings, error, count };
 }
 
 export default UseBookings;
