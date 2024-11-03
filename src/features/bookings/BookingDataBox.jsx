@@ -102,21 +102,41 @@ const Footer = styled.footer`
 `;
 
 // A purely presentational component
+// eslint-disable-next-line react/prop-types
 function BookingDataBox({ booking }) {
   const {
+    // eslint-disable-next-line react/prop-types
     created_at,
+    // eslint-disable-next-line react/prop-types
     startDate,
+    // eslint-disable-next-line react/prop-types
     endDate,
+    // eslint-disable-next-line react/prop-types
     numNights,
+    // eslint-disable-next-line react/prop-types
     numGuests,
+    // eslint-disable-next-line react/prop-types
     cabinPrice,
+    // eslint-disable-next-line react/prop-types
     extrasPrice,
+    // eslint-disable-next-line react/prop-types
     totalPrice,
+    // eslint-disable-next-line react/prop-types
     hasBreakfast,
+    // eslint-disable-next-line react/prop-types
     observations,
+    // eslint-disable-next-line react/prop-types
     isPaid,
-    guests: { fullName: guestName, email, country, countryFlag, nationalID },
-    cabins: { name: cabinName },
+    // eslint-disable-next-line react/prop-types
+    guests: {
+      fullName: guestName,
+      email,
+      country,
+      countryFlag,
+      nationalID,
+    } = {},
+    // eslint-disable-next-line react/prop-types
+    cabins: { name: cabinName } = {},
   } = booking;
 
   return (
@@ -169,7 +189,7 @@ function BookingDataBox({ booking }) {
 
             {hasBreakfast &&
               ` (${formatCurrency(cabinPrice)} cabin + ${formatCurrency(
-                extrasPrice
+                extrasPrice,
               )} breakfast)`}
           </DataItem>
 
