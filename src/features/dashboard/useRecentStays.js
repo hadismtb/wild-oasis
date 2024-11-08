@@ -3,7 +3,7 @@ import { subDays } from "date-fns";
 import { useQuery } from "@tanstack/react-query";
 import { getStaysAfterDate } from "../../services/apiBookings.js";
 
-function useRecentBookings() {
+function useRecentStays() {
   const [searchParams] = useSearchParams();
   const numDays = !searchParams.get("last")
     ? 7
@@ -20,7 +20,7 @@ function useRecentBookings() {
     (stay) => stay.status === "checked-in" || stay.status === "checked-out",
   );
 
-  return { stays, isLoading, confirmedStays };
+  return { stays, isLoading, confirmedStays, numDays };
 }
 
-export default useRecentBookings;
+export default useRecentStays;
