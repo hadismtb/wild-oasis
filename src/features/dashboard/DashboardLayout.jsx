@@ -4,6 +4,7 @@ import Spinner from "../../ui/Spinner.jsx";
 import useRecentStays from "./useRecentStays.js";
 import Stats from "./Stats.jsx";
 import useCabins from "../cabins/useCabins.js";
+import SalesChart from "./SalesChart.jsx";
 
 const StyledDashboardLayout = styled.div`
   display: grid;
@@ -15,6 +16,7 @@ const StyledDashboardLayout = styled.div`
 function DashboardLayout() {
   const { bookings, isLoading } = useRecentBookings();
   const {
+    // eslint-disable-next-line no-unused-vars
     stays,
     isLoading: staysIsLoading,
     confirmedStays,
@@ -22,7 +24,6 @@ function DashboardLayout() {
   } = useRecentStays();
   const { cabins, isLoading: cabinsIsLoading } = useCabins();
 
-  console.log(stays);
   if (isLoading || staysIsLoading || cabinsIsLoading) return <Spinner />;
 
   return (
@@ -35,7 +36,7 @@ function DashboardLayout() {
       />
       <div>Today&#39;s activity</div>
       <div>Chart stay duration</div>
-      <div>Chart sales</div>
+      <SalesChart bookings={bookings} numDays={numDays} />
     </StyledDashboardLayout>
   );
 }
