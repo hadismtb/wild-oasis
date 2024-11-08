@@ -1,4 +1,14 @@
 import styled from "styled-components";
+import Heading from "../../ui/Heading.jsx";
+import {
+  Cell,
+  Legend,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+} from "recharts";
+import { useDarkMode } from "../../context/DarkModeContext.jsx";
 
 const ChartBox = styled.div`
   /* Box */
@@ -18,6 +28,7 @@ const ChartBox = styled.div`
   }
 `;
 
+// eslint-disable-next-line no-unused-vars
 const startDataLight = [
   {
     duration: "1 night",
@@ -61,6 +72,7 @@ const startDataLight = [
   },
 ];
 
+// eslint-disable-next-line no-unused-vars
 const startDataDark = [
   {
     duration: "1 night",
@@ -104,12 +116,13 @@ const startDataDark = [
   },
 ];
 
+// eslint-disable-next-line no-unused-vars
 function prepareData(startData, stays) {
   // A bit ugly code, but sometimes this is what it takes when working with real data 😅
 
   function incArrayValue(arr, field) {
     return arr.map((obj) =>
-      obj.duration === field ? { ...obj, value: obj.value + 1 } : obj
+      obj.duration === field ? { ...obj, value: obj.value + 1 } : obj,
     );
   }
 
@@ -130,3 +143,49 @@ function prepareData(startData, stays) {
 
   return data;
 }
+
+// eslint-disable-next-line no-unused-vars,react/prop-types
+function DurationChart({ confirmedStays }) {
+  const { isDarkMode } = useDarkMode();
+  const startData = isDarkMode ? startDataDark : startDataLight;
+  const data = prepareData(startData, confirmedStays);
+
+  return (
+    <ChartBox>
+      <Heading as="h2">Stay duration summary</Heading>
+      <ResponsiveContainer width="100%" height={240}>
+        <PieChart>
+          <Pie
+            data={data}
+            nameKey="duration"
+            dataKey="value"
+            innerRadius={85}
+            outerRadius={110}
+            cx="40%"
+            cy="50%"
+            paddingAngle={3}
+          >
+            {data.map((entry) => (
+              <Cell
+                fill={entry.color}
+                stroke={entry.color}
+                key={entry.duration}
+              />
+            ))}
+          </Pie>
+          <Tooltip />
+          <Legend
+            verticalAlign="middle"
+            align="right"
+            width="30%"
+            layout="vertical"
+            iconSize={13}
+            iconType="circle"
+          />
+        </PieChart>
+      </ResponsiveContainer>
+    </ChartBox>
+  );
+}
+
+export default DurationChart;
