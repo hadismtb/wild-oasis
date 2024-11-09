@@ -12,7 +12,6 @@ function BookingTable() {
   if (isLoading) return <Spinner />;
 
   if (!bookings.length) return <Empty resourceName="Bookings" />;
-
   // 1.Filter
   // const filteredBookings =
   //   filterValue !== "all"
